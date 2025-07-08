@@ -69,6 +69,38 @@
       font-size: 14px;
       color: #555;
     }
+    #requirements {
+      margin-top: 25px;
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 500px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    #requirements h3 {
+      margin-top: 0;
+      color: #444;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    .declaration-box {
+      margin-top: 20px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+    .declaration-box h4 {
+      margin-bottom: 10px;
+    }
+    .declaration-box p {
+      font-size: 14px;
+      line-height: 1.5;
+    }
     @media (max-width: 600px) {
       h2 {
         font-size: 1.5rem;
@@ -99,6 +131,24 @@
 
   <button onclick="downloadImage()">Download Resized Image</button>
 
+  <div id="requirements">
+    <h3>📋 IBPS PO Image Requirements:</h3>
+    <ul>
+      <li><strong>Photo:</strong> 200x230 pixels, 20KB–50KB</li>
+      <li><strong>Signature:</strong> 140x60 pixels, 10KB–20KB</li>
+      <li><strong>Thumb Impression:</strong> 240x240 pixels, 20KB–50KB</li>
+      <li><strong>Handwritten Declaration:</strong> 800x400 pixels, 50KB–100KB</li>
+    </ul>
+  </div>
+
+  <div class="declaration-box">
+    <h4>✍️ Official IBPS Declaration Text:</h4>
+    <p>
+      "I, _______ (Name of the candidate), hereby declare that all the information submitted by me in the application form is correct, true and valid. I will present the supporting documents as and when required."
+    </p>
+    <p><strong>Note:</strong> The declaration should be in the candidate's own handwriting and in English only. Capital letters will not be accepted.</p>
+  </div>
+
   <script>
     const upload = document.getElementById("upload");
     const canvas = document.getElementById("canvas");
@@ -115,10 +165,10 @@
     };
 
     const securityTranslations = [
-      "100% Secure - No Data Stored or Uploaded", // English
-      "100% सुरक्षित - कोई डेटा सहेजा या अपलोड नहीं किया गया", // Hindi
-      "१००% सुरक्षित - कोणतेही डेटा संग्रहित किंवा अपलोड केले जात नाही", // Marathi
-      "100% பாதுகாப்பானது - எந்த தரவும் சேமிக்கப்படவில்லை அல்லது பதிவேற்றப்படவில்லை" // Tamil
+      "100% Secure - No Data Stored or Uploaded",
+      "100% सुरक्षित - कोई डेटा सहेजा या अपलोड नहीं किया गया",
+      "१००% सुरक्षित - कोणतेही डेटा संग्रहित किंवा अपलोड केले जात नाही",
+      "100% பாதுகாப்பானது - எந்த தரவும் சேமிக்கப்படவில்லை அல்லது பதிவேற்றப்படவில்லை"
     ];
 
     let langIndex = 0;

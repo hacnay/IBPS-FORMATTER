@@ -1,202 +1,186 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IBPS Image Formatter</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #f8f9fa, #e0eafc);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      color: #333;
+    }
+    h1.security {
+      color: #e74c3c;
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      text-align: center;
+      text-transform: uppercase;
+      min-height: 2em;
+      transition: opacity 0.5s ease;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+      font-size: 2rem;
+    }
+    select, input[type="file"], button {
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      width: 100%;
+      max-width: 400px;
+      background: #fff;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    button {
+      background-color: #5e60ce;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #4e4fc9;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    #preview {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+    }
+    @media (max-width: 600px) {
+      h2 {
+        font-size: 1.5rem;
+      }
+      h1.security {
+        font-size: 1.2rem;
+      }
+    }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;IBPS Image Formatter&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>* {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-sizing: border-box;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: 'Segoe UI', sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: linear-gradient(to right, #f8f9fa, #e0eafc);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: #333;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>h1.security {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: #e74c3c;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 800;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>min-height: 2em;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: opacity 0.5s ease;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>h2 {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: #2c3e50;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 2rem;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>select, input[type="file"], button {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 10px 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #ccc;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width: 400px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: #fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 4px 6px rgba(0,0,0,0.05);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>button {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background-color: #5e60ce;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: background 0.3s ease;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>button:hover {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background-color: #4e4fc9;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>canvas {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #ccc;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>height: auto;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 2px 8px rgba(0,0,0,0.1);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#preview {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: #555;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media (max-width: 600px) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>h2 {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>font-size: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>h1.security {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>font-size: 1.2rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1 class="security" id="securityMsg"&gt;100% Secure - No Data Stored or Uploaded&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;h2&gt;✨ IBPS Premium Image Formatter Tool&lt;/h2&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;label for="docType"&gt;Select Document Type:&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;select id="docType"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;option value="photo"&gt;Passport Size Photo (200x230)&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;option value="signature"&gt;Signature (140x60)&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;option value="thumb"&gt;Left Thumb Impression (240x240)&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;option value="declaration"&gt;Handwritten Declaration (800x400)&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/select&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;input type="file" id="upload" accept="image/*"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;canvas id="canvas" width="800" height="400"&gt;&lt;/canvas&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="preview"&gt;Estimated size: &lt;span id="sizeInfo"&gt;0 KB&lt;/span&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button onclick="downloadImage()"&gt;Download Resized Image&lt;/button&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const upload = document.getElementById("upload");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const canvas = document.getElementById("canvas");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const ctx = canvas.getContext("2d");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const docType = document.getElementById("docType");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const sizeInfo = document.getElementById("sizeInfo");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const securityMsg = document.getElementById("securityMsg");</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const dimensions = {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>photo: { width: 200, height: 230, quality: 0.9 },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>signature: { width: 140, height: 60, quality: 0.9 },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>thumb: { width: 240, height: 240, quality: 0.9 },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>declaration: { width: 800, height: 400, quality: 0.8 }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const securityTranslations = [</p>
-<p class="p1"><span class="Apple-converted-space">      </span>"100% Secure - No Data Stored or Uploaded", // English</p>
-<p class="p1"><span class="Apple-converted-space">      </span>"100% सुरक्षित - कोई डेटा सहेजा या अपलोड नहीं किया गया", // Hindi</p>
-<p class="p1"><span class="Apple-converted-space">      </span>"१००% सुरक्षित - कोणतेही डेटा संग्रहित किंवा अपलोड केले जात नाही", // Marathi</p>
-<p class="p1"><span class="Apple-converted-space">      </span>"100% பாதுகாப்பானது - எந்த தரவும் சேமிக்கப்படவில்லை அல்லது பதிவேற்றப்படவில்லை" // Tamil</p>
-<p class="p1"><span class="Apple-converted-space">    </span>];</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>let langIndex = 0;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>setInterval(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>securityMsg.style.opacity = 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>langIndex = (langIndex + 1) % securityTranslations.length;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>securityMsg.textContent = securityTranslations[langIndex];</p>
-<p class="p1"><span class="Apple-converted-space">        </span>securityMsg.style.opacity = 1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}, 500);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}, 2000);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function updateCanvasDimensions() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const dim = dimensions[docType.value];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>canvas.width = dim.width;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>canvas.height = dim.height;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>ctx.clearRect(0, 0, canvas.width, canvas.height);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function updateSizePreview() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const dim = dimensions[docType.value];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const dataURL = canvas.toDataURL("image/jpeg", dim.quality);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const sizeInKB = Math.round((dataURL.length * 3 / 4) / 1024);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>sizeInfo.textContent = `${sizeInKB} KB`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>docType.addEventListener("change", () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>updateCanvasDimensions();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>updateSizePreview();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>upload.addEventListener("change", (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const file = e.target.files[0];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const reader = new FileReader();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>reader.onload = function(event) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const img = new Image();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>img.onload = function() {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>updateCanvasDimensions();</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const dim = dimensions[docType.value];</p>
-<p class="p1"><span class="Apple-converted-space">          </span>ctx.drawImage(img, 0, 0, dim.width, dim.height);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>updateSizePreview();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p1"><span class="Apple-converted-space">        </span>img.src = event.target.result;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (file) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>reader.readAsDataURL(file);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function downloadImage() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const dim = dimensions[docType.value];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const dataURL = canvas.toDataURL("image/jpeg", dim.quality);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const a = document.createElement("a");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>a.href = dataURL;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>a.download = `${docType.value}.jpg`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>a.click();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>updateCanvasDimensions();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>updateSizePreview();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <h1 class="security" id="securityMsg">100% Secure - No Data Stored or Uploaded</h1>
+  <h2>✨ IBPS Premium Image Formatter Tool</h2>
+
+  <label for="docType">Select Document Type:</label>
+  <select id="docType">
+    <option value="photo">Passport Size Photo (200x230)</option>
+    <option value="signature">Signature (140x60)</option>
+    <option value="thumb">Left Thumb Impression (240x240)</option>
+    <option value="declaration">Handwritten Declaration (800x400)</option>
+  </select>
+
+  <input type="file" id="upload" accept="image/*">
+
+  <canvas id="canvas" width="800" height="400"></canvas>
+
+  <div id="preview">Estimated size: <span id="sizeInfo">0 KB</span></div>
+
+  <button onclick="downloadImage()">Download Resized Image</button>
+
+  <script>
+    const upload = document.getElementById("upload");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const docType = document.getElementById("docType");
+    const sizeInfo = document.getElementById("sizeInfo");
+    const securityMsg = document.getElementById("securityMsg");
+
+    const dimensions = {
+      photo: { width: 200, height: 230, quality: 0.9 },
+      signature: { width: 140, height: 60, quality: 0.9 },
+      thumb: { width: 240, height: 240, quality: 0.9 },
+      declaration: { width: 800, height: 400, quality: 0.8 }
+    };
+
+    const securityTranslations = [
+      "100% Secure - No Data Stored or Uploaded", // English
+      "100% सुरक्षित - कोई डेटा सहेजा या अपलोड नहीं किया गया", // Hindi
+      "१००% सुरक्षित - कोणतेही डेटा संग्रहित किंवा अपलोड केले जात नाही", // Marathi
+      "100% பாதுகாப்பானது - எந்த தரவும் சேமிக்கப்படவில்லை அல்லது பதிவேற்றப்படவில்லை" // Tamil
+    ];
+
+    let langIndex = 0;
+    setInterval(() => {
+      securityMsg.style.opacity = 0;
+      setTimeout(() => {
+        langIndex = (langIndex + 1) % securityTranslations.length;
+        securityMsg.textContent = securityTranslations[langIndex];
+        securityMsg.style.opacity = 1;
+      }, 500);
+    }, 2000);
+
+    function updateCanvasDimensions() {
+      const dim = dimensions[docType.value];
+      canvas.width = dim.width;
+      canvas.height = dim.height;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function updateSizePreview() {
+      const dim = dimensions[docType.value];
+      const dataURL = canvas.toDataURL("image/jpeg", dim.quality);
+      const sizeInKB = Math.round((dataURL.length * 3 / 4) / 1024);
+      sizeInfo.textContent = `${sizeInKB} KB`;
+    }
+
+    docType.addEventListener("change", () => {
+      updateCanvasDimensions();
+      updateSizePreview();
+    });
+
+    upload.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          updateCanvasDimensions();
+          const dim = dimensions[docType.value];
+          ctx.drawImage(img, 0, 0, dim.width, dim.height);
+          updateSizePreview();
+        };
+        img.src = event.target.result;
+      };
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function downloadImage() {
+      const dim = dimensions[docType.value];
+      const dataURL = canvas.toDataURL("image/jpeg", dim.quality);
+      const a = document.createElement("a");
+      a.href = dataURL;
+      a.download = `${docType.value}.jpg`;
+      a.click();
+    }
+
+    updateCanvasDimensions();
+    updateSizePreview();
+  </script>
 </body>
 </html>

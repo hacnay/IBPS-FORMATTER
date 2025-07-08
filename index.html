@@ -125,7 +125,7 @@
 
   <input type="file" id="upload" accept="image/*">
 
-  <canvas id="canvas" width="800" height="400"></canvas>
+  <canvas id="canvas"></canvas>
 
   <div id="preview">Estimated size: <span id="sizeInfo">0 KB</span></div>
 
@@ -158,10 +158,10 @@
     const securityMsg = document.getElementById("securityMsg");
 
     const dimensions = {
-      photo: { width: 200, height: 230, quality: 0.9 },
-      signature: { width: 140, height: 60, quality: 0.9 },
-      thumb: { width: 240, height: 240, quality: 0.9 },
-      declaration: { width: 800, height: 400, quality: 0.8 }
+      photo: { width: 200, height: 230, quality: 0.92 },
+      signature: { width: 140, height: 60, quality: 0.88 },
+      thumb: { width: 240, height: 240, quality: 0.91 },
+      declaration: { width: 800, height: 400, quality: 0.75 }
     };
 
     const securityTranslations = [

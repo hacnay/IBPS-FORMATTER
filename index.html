@@ -1,236 +1,383 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IBPS Image Formatter</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #f8f9fa, #e0eafc);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      color: #333;
-    }
-    h1.security {
-      color: #e74c3c;
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin-bottom: 10px;
-      text-align: center;
-      text-transform: uppercase;
-      min-height: 2em;
-      transition: opacity 0.5s ease;
-    }
-    h2 {
-      margin-bottom: 20px;
-      color: #2c3e50;
-      font-size: 2rem;
-    }
-    select, input[type="file"], button {
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      font-size: 16px;
-      width: 100%;
-      max-width: 400px;
-      background: #fff;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    }
-    button {
-      background-color: #5e60ce;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background-color: #4e4fc9;
-    }
-    canvas {
-      border: 1px solid #ccc;
-      margin-top: 20px;
-      width: 100%;
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    #preview {
-      margin-top: 15px;
-      font-size: 14px;
-      color: #555;
-    }
-    #requirements {
-      margin-top: 25px;
-      font-size: 15px;
-      line-height: 1.6;
-      max-width: 500px;
-      padding: 15px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-    #requirements h3 {
-      margin-top: 0;
-      color: #444;
-    }
-    ul {
-      padding-left: 20px;
-    }
-    .declaration-box {
-      margin-top: 20px;
-      background: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      max-width: 600px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    }
-    .declaration-box h4 {
-      margin-bottom: 10px;
-    }
-    .declaration-box p {
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    @media (max-width: 600px) {
-      h2 {
-        font-size: 1.5rem;
-      }
-      h1.security {
-        font-size: 1.2rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBPS Image Formatter</title>
+    <!-- Tailwind CSS CDN for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for a clean, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Apply Inter font globally and ensure box-sizing */
+        body {
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
+        /* Canvas specific styling to ensure it's responsive */
+        canvas {
+            max-width: 100%;
+            height: auto; /* Maintain aspect ratio */
+            display: block; /* Remove extra space below canvas */
+        }
+        /* Custom styles for the message box, replacing alert() */
+        #messageBox {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            font-size: 1rem;
+        }
+        #messageBox.show {
+            opacity: 1;
+        }
+    </style>
 </head>
-<body>
-  <h1 class="security" id="securityMsg">100% Secure - No Data Stored or Uploaded</h1>
-  <h2>✨ IBPS Premium Image Formatter Tool</h2>
+<body class="bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 flex flex-col items-center p-6 text-gray-800 min-h-screen">
 
-  <label for="docType">Select Document Type:</label>
-  <select id="docType">
-    <option value="photo">Passport Size Photo (200x230)</option>
-    <option value="signature">Signature (140x60)</option>
-    <option value="thumb">Left Thumb Impression (240x240)</option>
-    <option value="declaration">Handwritten Declaration (800x400)</option>
-  </select>
+    <!-- Security Message with dynamic translation -->
+    <h1 class="text-red-600 text-xl font-extrabold mb-4 text-center uppercase min-h-8 transition-opacity duration-500" id="securityMsg">
+        100% Secure - No Data Stored or Uploaded
+    </h1>
 
-  <input type="file" id="upload" accept="image/*">
+    <!-- Main Title -->
+    <h2 class="mb-10 text-indigo-800 text-5xl font-extrabold text-center tracking-tight">✨ IBPS/BANK Image Formatter Tool</h2>
 
-  <canvas id="canvas"></canvas>
+    <!-- Main Container for controls and canvas -->
+    <div class="bg-white p-10 rounded-3xl shadow-xl border border-gray-100 w-full max-w-2xl flex flex-col items-center space-y-8">
 
-  <div id="preview">Estimated size: <span id="sizeInfo">0 KB</span></div>
+        <!-- Document Type Selection -->
+        <div class="w-full">
+            <label for="docType" class="block text-lg font-semibold text-gray-700 mb-2">Select Document Type:</label>
+            <select id="docType" class="p-4 border border-gray-300 rounded-xl text-lg w-full bg-gray-50 shadow-sm focus:outline-none focus:ring-3 focus:ring-indigo-400 transition-all duration-200 appearance-none cursor-pointer">
+                <option value="photo">Passport Size Photo (200x230)</option>
+                <option value="signature">Signature (140x60)</option>
+                <option value="thumb">Left Thumb Impression (240x240)</option>
+                <option value="declaration">Handwritten Declaration (800x400)</option>
+            </select>
+        </div>
 
-  <button onclick="downloadImage()">Download Resized Image</button>
+        <!-- Image Upload Input -->
+        <div class="w-full">
+            <label for="upload" class="block text-lg font-semibold text-gray-700 mb-2">Upload Your Image:</label>
+            <input type="file" id="upload" accept="image/*" class="block w-full text-base text-gray-700 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-base file:font-semibold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200 transition-all duration-200 cursor-pointer shadow-sm">
+        </div>
 
-  <div id="requirements">
-    <h3>📋 IBPS PO Image Requirements:</h3>
-    <ul>
-      <li><strong>Photo:</strong> 200x230 pixels, 20KB–50KB</li>
-      <li><strong>Signature:</strong> 140x60 pixels, 10KB–20KB</li>
-      <li><strong>Thumb Impression:</strong> 240x240 pixels, 20KB–50KB</li>
-      <li><strong>Handwritten Declaration:</strong> 800x400 pixels, 50KB–100KB</li>
-    </ul>
-  </div>
+        <!-- Canvas for Image Preview -->
+        <canvas id="canvas" class="border border-gray-300 mt-6 w-full max-w-full rounded-2xl shadow-inner bg-gray-50"></canvas>
 
-  <div class="declaration-box">
-    <h4>✍️ Official IBPS Declaration Text:</h4>
-    <p>
-      "I, _______ (Name of the candidate), hereby declare that all the information submitted by me in the application form is correct, true and valid. I will present the supporting documents as and when required."
-    </p>
-    <p><strong>Note:</strong> The declaration should be in the candidate's own handwriting and in English only. Capital letters will not be accepted.</p>
-  </div>
+        <!-- Estimated Size Info -->
+        <div id="preview" class="mt-4 text-lg text-gray-600">
+            Estimated size: <span id="sizeInfo" class="font-bold text-gray-800">0 KB</span>
+        </div>
 
-  <script>
-    const upload = document.getElementById("upload");
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-    const docType = document.getElementById("docType");
-    const sizeInfo = document.getElementById("sizeInfo");
-    const securityMsg = document.getElementById("securityMsg");
+        <!-- Download Button -->
+        <button onclick="downloadImage()" id="downloadBtn" class="bg-gradient-to-r from-indigo-600 to-purple-700 text-white py-4 px-10 rounded-2xl shadow-xl hover:shadow-2xl hover:from-indigo-700 hover:to-purple-800 transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2 w-full max-w-sm font-bold text-xl tracking-wide">
+            Download Resized Image
+        </button>
+    </div>
 
-    const dimensions = {
-      photo: { width: 200, height: 230, quality: 0.92 },
-      signature: { width: 140, height: 60, quality: 0.88 },
-      thumb: { width: 240, height: 240, quality: 0.91 },
-      declaration: { width: 800, height: 400, quality: 0.75 }
-    };
+    <!-- Requirements Section -->
+    <div id="requirements" class="mt-12 bg-white p-10 rounded-3xl shadow-xl border border-gray-100 w-full max-w-2xl text-base leading-relaxed">
+        <h3 class="text-3xl font-bold text-gray-900 mb-5">📋 IBPS PO Image Requirements:</h3>
+        <ul class="list-disc list-inside space-y-3 text-gray-700 text-lg">
+            <li><strong>Photo:</strong> 200x230 pixels, 20KB–50KB</li>
+            <li><strong>Signature:</strong> 140x60 pixels, 10KB–20KB</li>
+            <li><strong>Thumb Impression:</strong> 240x240 pixels, 20KB–50KB</li>
+            <li><strong>Handwritten Declaration:</strong> 800x400 pixels, 50KB–100KB</li>
+        </ul>
+    </div>
 
-    const securityTranslations = [
-      "100% Secure - No Data Stored or Uploaded",
-      "100% सुरक्षित - कोई डेटा सहेजा या अपलोड नहीं किया गया",
-      "१००% सुरक्षित - कोणतेही डेटा संग्रहित किंवा अपलोड केले जात नाही",
-      "100% பாதுகாப்பானது - எந்த தரவும் சேமிக்கப்படவில்லை அல்லது பதிவேற்றப்படவில்லை"
-    ];
+    <!-- Declaration Text Box -->
+    <div class="declaration-box mt-10 bg-white p-10 rounded-3xl shadow-xl border border-gray-100 w-full max-w-2xl text-base leading-relaxed">
+        <h4 class="text-3xl font-bold text-gray-900 mb-5">✍️ Official IBPS Declaration Text:</h4>
+        <p class="text-gray-700 mb-4 text-lg">
+            "I, <span class="font-semibold text-indigo-700">_______ (Name of the candidate)</span>, hereby declare that all the information submitted by me in the application form is correct, true and valid. I will present the supporting documents as and when required."
+        </p>
+        <p class="text-sm text-red-600 font-medium">
+            <strong>Note:</strong> The declaration should be in the candidate's own handwriting and in English only. Capital letters will not be accepted.
+        </p>
+    </div>
 
-    let langIndex = 0;
-    setInterval(() => {
-      securityMsg.style.opacity = 0;
-      setTimeout(() => {
-        langIndex = (langIndex + 1) % securityTranslations.length;
-        securityMsg.textContent = securityTranslations[langIndex];
-        securityMsg.style.opacity = 1;
-      }, 500);
-    }, 2000);
+    <!-- Custom Message Box -->
+    <div id="messageBox" class="hidden"></div>
 
-    function updateCanvasDimensions() {
-      const dim = dimensions[docType.value];
-      canvas.width = dim.width;
-      canvas.height = dim.height;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+    <script>
+        // Get references to DOM elements
+        const upload = document.getElementById("upload");
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const docType = document.getElementById("docType");
+        const sizeInfo = document.getElementById("sizeInfo");
+        const securityMsg = document.getElementById("securityMsg");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const messageBox = document.getElementById("messageBox");
 
-    function updateSizePreview() {
-      const dim = dimensions[docType.value];
-      const dataURL = canvas.toDataURL("image/jpeg", dim.quality);
-      const sizeInKB = Math.round((dataURL.length * 3 / 4) / 1024);
-      sizeInfo.textContent = `${sizeInKB} KB`;
-    }
-
-    docType.addEventListener("change", () => {
-      updateCanvasDimensions();
-      updateSizePreview();
-    });
-
-    upload.addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-
-      reader.onload = function(event) {
-        const img = new Image();
-        img.onload = function() {
-          updateCanvasDimensions();
-          const dim = dimensions[docType.value];
-          ctx.drawImage(img, 0, 0, dim.width, dim.height);
-          updateSizePreview();
+        // Define dimensions, target file size ranges, and initial quality for different document types
+        const dimensions = {
+            photo: { width: 200, height: 230, minSize: 20, maxSize: 50, currentQuality: 0.9 },
+            signature: { width: 140, height: 60, minSize: 10, maxSize: 20, currentQuality: 0.8 },
+            thumb: { width: 240, height: 240, minSize: 20, maxSize: 50, currentQuality: 0.9 },
+            declaration: { width: 800, height: 400, minSize: 50, maxSize: 100, currentQuality: 0.7 }
         };
-        img.src = event.target.result;
-      };
 
-      if (file) {
-        reader.readAsDataURL(file);
-      }
-    });
+        // Translations for the security message
+        const securityTranslations = [
+            "100% Secure - No Data Stored or Uploaded",
+            "100% सुरक्षित - कोई डेटा सहेजा या अपलोड नहीं किया गया",
+            "१००% सुरक्षित - कोणतेही डेटा संग्रहित किंवा अपलोड केले जात नाही",
+            "100% பாதுகாப்பானது - எந்த தரவும் சேமிக்கப்படவில்லை அல்லது பதிவேற்றப்படவில்லை"
+        ];
 
-    function downloadImage() {
-      const dim = dimensions[docType.value];
-      const dataURL = canvas.toDataURL("image/jpeg", dim.quality);
-      const a = document.createElement("a");
-      a.href = dataURL;
-      a.download = `${docType.value}.jpg`;
-      a.click();
-    }
+        let langIndex = 0; // Current language index for security message
+        // Interval to rotate the security message text
+        setInterval(() => {
+            securityMsg.style.opacity = 0; // Fade out
+            setTimeout(() => {
+                langIndex = (langIndex + 1) % securityTranslations.length; // Cycle through languages
+                securityMsg.textContent = securityTranslations[langIndex]; // Update text
+                securityMsg.style.opacity = 1; // Fade in
+            }, 500); // Wait for fade out before changing text
+        }, 3000); // Change every 3 seconds
 
-    updateCanvasDimensions();
-    updateSizePreview();
-  </script>
+        /**
+         * Displays a temporary message to the user.
+         * @param {string} message - The message to display.
+         * @param {string} type - Type of message (e.g., 'success', 'error'). Not used for styling yet, but good for future.
+         */
+        function showMessage(message, type = 'info') {
+            messageBox.textContent = message;
+            messageBox.className = 'show'; // Show the message box
+            setTimeout(() => {
+                messageBox.className = 'hidden'; // Hide after 3 seconds
+            }, 3000);
+        }
+
+        /**
+         * Updates the canvas dimensions based on the selected document type.
+         * Clears the canvas content.
+         */
+        function updateCanvasDimensions() {
+            const dim = dimensions[docType.value];
+            canvas.width = dim.width;
+            canvas.height = dim.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear previous image
+        }
+
+        /**
+         * Calculates and displays the estimated file size of the image on the canvas.
+         * This function now takes a quality parameter to allow for dynamic adjustment.
+         * @param {number} quality - The JPEG quality to use for size estimation.
+         * @returns {number} The estimated size in KB.
+         */
+        function getEstimatedSize(quality) {
+            // Ensure canvas is not empty before calculating size
+            if (canvas.width > 0 && canvas.height > 0 && !ctx.getImageData(0, 0, 1, 1).data.every(v => v === 0)) {
+                const dataURL = canvas.toDataURL("image/jpeg", quality);
+                // Calculate size in KB (approximate)
+                return Math.round((dataURL.length * 0.75) / 1024); // 0.75 factor for base64 to binary
+            }
+            return 0; // No image loaded yet
+        }
+
+        /**
+         * Adjusts the image quality iteratively to meet the target file size range.
+         * Updates the sizeInfo display.
+         */
+        function adjustImageQualityAndSize() {
+            const dim = dimensions[docType.value];
+            let currentQuality = dim.currentQuality; // Start with the last known quality for this type
+            const minSize = dim.minSize;
+            const maxSize = dim.maxSize;
+            const qualityStep = 0.01; // Small step for fine-tuning
+            const maxIterations = 100; // Prevent infinite loops
+
+            let currentSizeInKB = getEstimatedSize(currentQuality);
+            sizeInfo.textContent = `${currentSizeInKB} KB (Adjusting...)`;
+
+            for (let i = 0; i < maxIterations; i++) {
+                if (currentSizeInKB >= minSize && currentSizeInKB <= maxSize) {
+                    break; // Size is within range, stop adjusting
+                }
+
+                if (currentSizeInKB < minSize) {
+                    currentQuality += qualityStep; // Increase quality if too small
+                } else if (currentSizeInKB > maxSize) {
+                    currentQuality -= qualityStep; // Decrease quality if too large
+                }
+
+                // Clamp quality between 0.1 and 1.0 to prevent invalid values
+                currentQuality = Math.max(0.1, Math.min(1.0, currentQuality));
+
+                currentSizeInKB = getEstimatedSize(currentQuality);
+                sizeInfo.textContent = `${currentSizeInKB} KB (Adjusting...)`; // Update during adjustment
+            }
+
+            // Store the final adjusted quality
+            dim.currentQuality = currentQuality;
+            sizeInfo.textContent = `${currentSizeInKB} KB`; // Final size display
+        }
+
+
+        // Event listener for document type change
+        docType.addEventListener("change", () => {
+            updateCanvasDimensions();
+            // If an image is already loaded, redraw it with new dimensions and re-adjust quality
+            if (upload.files[0]) {
+                const file = upload.files[0];
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const dim = dimensions[docType.value];
+                        // Draw image to fit the new canvas dimensions
+                        let sx = 0, sy = 0, sWidth = img.width, sHeight = img.height;
+                        let dx = 0, dy = 0, dWidth = dim.width, dHeight = dim.height;
+
+                        const imgAspectRatio = img.width / img.height;
+                        const canvasAspectRatio = dim.width / dim.height;
+
+                        if (imgAspectRatio > canvasAspectRatio) {
+                            sWidth = img.height * canvasAspectRatio;
+                            sx = (img.width - sWidth) / 2;
+                        } else {
+                            sHeight = img.width / canvasAspectRatio;
+                            sy = (img.height - sHeight) / 2;
+                        }
+                        ctx.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+
+                        adjustImageQualityAndSize(); // Adjust quality for the new type
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                sizeInfo.textContent = `0 KB`; // Update size to 0 KB if no image
+            }
+        });
+
+        // Event listener for file upload
+        upload.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+
+            if (!file) {
+                sizeInfo.textContent = `0 KB`;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                return; // No file selected
+            }
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                showMessage("Please upload an image file (e.g., JPG, PNG).", 'error');
+                upload.value = ''; // Clear the file input
+                sizeInfo.textContent = `0 KB`;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onloadstart = () => {
+                downloadBtn.textContent = 'Processing...';
+                downloadBtn.disabled = true;
+                downloadBtn.classList.add('opacity-70', 'cursor-not-allowed');
+                sizeInfo.textContent = `Processing...`;
+            };
+
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    updateCanvasDimensions(); // Set canvas to target dimensions
+                    const dim = dimensions[docType.value];
+
+                    // Draw image on canvas, scaling it to fit the target dimensions
+                    // Maintain aspect ratio while fitting within the canvas
+                    let sx = 0, sy = 0, sWidth = img.width, sHeight = img.height;
+                    let dx = 0, dy = 0, dWidth = dim.width, dHeight = dim.height;
+
+                    const imgAspectRatio = img.width / img.height;
+                    const canvasAspectRatio = dim.width / dim.height;
+
+                    if (imgAspectRatio > canvasAspectRatio) {
+                        // Image is wider than canvas, fit by height
+                        sWidth = img.height * canvasAspectRatio;
+                        sx = (img.width - sWidth) / 2;
+                    } else {
+                        // Image is taller than canvas, fit by width
+                        sHeight = img.width / canvasAspectRatio;
+                        sy = (img.height - sHeight) / 2;
+                    }
+
+                    // Draw the image to fill the canvas, cropping if necessary
+                    ctx.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+
+                    // Adjust quality to meet file size requirements
+                    adjustImageQualityAndSize();
+
+                    downloadBtn.textContent = 'Download Resized Image';
+                    downloadBtn.disabled = false;
+                    downloadBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                };
+                img.onerror = () => {
+                    showMessage("Could not load image. Please try another file.", 'error');
+                    downloadBtn.textContent = 'Download Resized Image';
+                    downloadBtn.disabled = false;
+                    downloadBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                    upload.value = ''; // Clear the file input
+                    sizeInfo.textContent = `0 KB`;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                };
+                img.src = event.target.result;
+            };
+
+            reader.onerror = () => {
+                showMessage("Error reading file. Please try again.", 'error');
+                downloadBtn.textContent = 'Download Resized Image';
+                downloadBtn.disabled = false;
+                downloadBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                upload.value = ''; // Clear the file input
+                sizeInfo.textContent = `0 KB`;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        /**
+         * Downloads the image from the canvas.
+         */
+        function downloadImage() {
+            // Check if canvas is empty
+            if (canvas.width === 0 || canvas.height === 0 || ctx.getImageData(0, 0, 1, 1).data.every(v => v === 0)) {
+                showMessage("Please upload an image first.", 'info');
+                return;
+            }
+
+            const dim = dimensions[docType.value];
+            // Use the dynamically adjusted quality for download
+            const dataURL = canvas.toDataURL("image/jpeg", dim.currentQuality);
+            const a = document.createElement("a"); // Create a temporary anchor element
+            a.href = dataURL; // Set href to the image data
+            a.download = `${docType.value}_${Date.now()}.jpg`; // Set download filename
+            document.body.appendChild(a); // Append to body (required for Firefox)
+            a.click(); // Programmatically click to trigger download
+            document.body.removeChild(a); // Clean up the element
+            showMessage("Image downloaded successfully!", 'success');
+        }
+
+        // Initial setup when the page loads
+        document.addEventListener("DOMContentLoaded", () => {
+            updateCanvasDimensions(); // Set initial canvas size
+            sizeInfo.textContent = `0 KB`; // Initial size display
+        });
+    </script>
 </body>
 </html>

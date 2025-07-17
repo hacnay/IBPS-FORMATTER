@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IBPS Image Formatter</title>
+    <title>IBPS/Bank Image Formatter Tool - Resize Photo, Signature, Thumb, Declaration</title>
+    <meta name="description" content="Easily format your passport photo, signature, left thumb impression, and handwritten declaration for IBPS and other bank exams. Resize images to exact pixels and file sizes (KB) instantly. 100% Secure & Private.">
     <!-- Tailwind CSS CDN for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter for a clean, modern look -->
@@ -83,6 +84,11 @@
         <button onclick="downloadImage()" id="downloadBtn" class="bg-gradient-to-r from-indigo-600 to-purple-700 text-white py-4 px-10 rounded-2xl shadow-xl hover:shadow-2xl hover:from-indigo-700 hover:to-purple-800 transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2 w-full max-w-sm font-bold text-xl tracking-wide">
             Download Resized Image
         </button>
+
+        <!-- Reset Button -->
+        <button onclick="resetTool()" id="resetBtn" class="bg-gray-200 text-gray-700 py-3 px-8 rounded-xl shadow-md hover:bg-gray-300 transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 w-full max-w-sm font-semibold text-lg">
+            Reset
+        </button>
     </div>
 
     <!-- Requirements Section -->
@@ -120,6 +126,7 @@
         const securityMsg = document.getElementById("securityMsg");
         const downloadBtn = document.getElementById("downloadBtn");
         const messageBox = document.getElementById("messageBox");
+        const resetBtn = document.getElementById("resetBtn"); // Get the new reset button
 
         // Define dimensions, target file size ranges, and initial quality for different document types
         const dimensions = {
@@ -224,6 +231,25 @@
             // Store the final adjusted quality
             dim.currentQuality = currentQuality;
             sizeInfo.textContent = `${currentSizeInKB} KB`; // Final size display
+
+            // Provide feedback if the target range couldn't be perfectly met
+            if (currentSizeInKB < minSize || currentSizeInKB > maxSize) {
+                showMessage(`Warning: Final size ${currentSizeInKB} KB is close to target, but may vary from ${minSize}-${maxSize} KB.`, 'warning');
+            }
+        }
+
+        /**
+         * Resets the tool to its initial state.
+         */
+        function resetTool() {
+            upload.value = ''; // Clear the file input
+            docType.value = 'photo'; // Reset document type to default
+            updateCanvasDimensions(); // Reset canvas dimensions and clear it
+            sizeInfo.textContent = `0 KB`; // Reset size info
+            downloadBtn.textContent = 'Download Resized Image';
+            downloadBtn.disabled = false;
+            downloadBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+            showMessage("Tool reset successfully!", 'info');
         }
 
 
